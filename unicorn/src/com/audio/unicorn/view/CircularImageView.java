@@ -1,10 +1,13 @@
 package com.audio.unicorn.view;
 
 import android.content.Context;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
+import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.audio.unicorn.R;
@@ -16,6 +19,7 @@ public class CircularImageView extends ImageView {
     public CircularImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     private void init(Context context) {
@@ -36,9 +40,7 @@ public class CircularImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.save();
         canvas.clipPath(mPath);
         super.onDraw(canvas);
-        canvas.restore();
     }
 }
