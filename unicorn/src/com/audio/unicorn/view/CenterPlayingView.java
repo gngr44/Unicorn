@@ -34,6 +34,6 @@ public class CenterPlayingView extends View {
         }
         final int padding = (int) (20 * getResources().getDisplayMetrics().density + 0.5f);
         final int radius = getWidth() / 2 - padding;
-        canvas.drawCircle(getLeft() + getWidth() / 2, getTop() + getHeight() / 2, radius, mPaint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius, mPaint);
     }
 }
