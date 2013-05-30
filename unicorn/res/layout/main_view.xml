@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.audio.unicorn.view.CenterPlayingView
+        android:id="@+id/CenterView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <com.audio.unicorn.view.TrackView
+        android:id="@+id/TrackView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.audio.unicorn.view.TrackView
+        android:id="@+id/TrackView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.audio.unicorn.view.TrackView
+        android:id="@+id/TrackView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.audio.unicorn.view.TrackView
+        android:id="@+id/TrackView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.audio.unicorn.view.TrackView
+        android:id="@+id/TrackView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>
