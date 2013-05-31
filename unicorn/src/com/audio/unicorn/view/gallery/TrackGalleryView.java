@@ -73,6 +73,7 @@ public class TrackGalleryView extends ViewPager implements OnTouchListener {
         public Object instantiateItem(ViewGroup container, int position) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.track_gallery_item_view, container, false);
             ImageView imageView = (ImageView) view.findViewById(R.id.ImageView);
+            imageView.setBackgroundResource(R.drawable.track_slot);
             TextView titleText = (TextView) view.findViewById(R.id.TitleText);
             titleText.setText(mTracks.get(position).getTitle());
             imageView.setImageResource(R.drawable.ic_launcher);

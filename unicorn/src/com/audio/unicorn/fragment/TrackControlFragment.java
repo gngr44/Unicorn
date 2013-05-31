@@ -136,11 +136,13 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     }
 
     private void startSlotAnimation() {
-        float rotation = mControlView.getTrackSlotView().getRotation();
-        long playTime = (long) ((rotation / 360) * mSlotAnimation.getDuration());
-        mSlotAnimation.start();
-        mSlotAnimation.setCurrentPlayTime(playTime);
-        updateSlotAnimationSpeed(mSamplingRateValue);
+        if (!mSlotAnimation.isRunning()) {
+            float rotation = mControlView.getTrackSlotView().getRotation();
+            long playTime = (long) ((rotation / 360) * mSlotAnimation.getDuration());
+            mSlotAnimation.start();
+            mSlotAnimation.setCurrentPlayTime(playTime);
+            updateSlotAnimationSpeed(mSamplingRateValue);
+        }
     }
 
     @Override
