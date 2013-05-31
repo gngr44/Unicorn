@@ -2,6 +2,8 @@ package com.audio.unicorn.fragment;
 
 import java.io.FileNotFoundException;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Fragment;
@@ -45,7 +47,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
     private TrackControlView mControlView;
     private VerticalSeekBar mSeekBar;
-    private PopupWindow mPopupWindow;
+    private CustomPopupWindow mPopupWindow;
     private ObjectAnimator mSlotAnimation;
 
     private UnicornAudioEngine mAudioEngine;
@@ -152,10 +154,10 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
             }
         } else if (v.getId() == R.id.GainOption) {
             setMode(MODE_GAIN);
-            mPopupWindow.dismiss();
+            dismissPopup(mPopupWindow);
         } else if (v.getId() == R.id.SampleRateOption) {
             setMode(MODE_SAMPLE_RATE);
-            mPopupWindow.dismiss();
+            dismissPopup(mPopupWindow);
         }
     }
 
@@ -252,7 +254,8 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
             TrackOptionsView trackOptionsView = new TrackOptionsView(getActivity());
             trackOptionsView.getGainView().setOnClickListener(this);
             trackOptionsView.getSampleRateView().setOnClickListener(this);
-            mPopupWindow = new PopupWindow(trackOptionsView);
+
+            mPopupWindow = new CustomPopupWindow(trackOptionsView);
             mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources()));
             mPopupWindow.setOutsideTouchable(true);
         }
@@ -268,6 +271,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
         Log.d("TEST", "show popup x: " + location[0] + "y: " + location[1]);
         mPopupWindow.showAtLocation(getView(), Gravity.NO_GRAVITY, (int) location[0], (int) location[1]);
+        mPopupWindow.getContentView().setAlpha(1);
 
         AnimatorSet animationSet = new AnimatorSet();
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(mPopupWindow.getContentView(), "scaleX", 0.5f, 1.0f);
@@ -275,5 +279,51 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         animationSet.playTogether(scaleX, scaleY);
         animationSet.start();
         return true;
+    }
+
+    private static void dismissPopup(final CustomPopupWindow popupWindow) {
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(popupWindow.getContentView(), "alpha", 1.0f, 0.0f);
+        alpha.addListener(new AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                popupWindow.realDismiss();
+            };
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+        });
+        alpha.start();
+    }
+
+    /**
+     * A lame way of doing some animation before actually dismissing the PopupWindow.
+     * 
+     * @author chungo
+     * 
+     */
+    private static class CustomPopupWindow extends PopupWindow {
+
+        public CustomPopupWindow(View contentView) {
+            super(contentView);
+        }
+
+        @Override
+        public void dismiss() {
+            dismissPopup(this);
+        }
+
+        public void realDismiss() {
+            super.dismiss();
+        }
     }
 }
