@@ -252,7 +252,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
     @Override
     public boolean onLongClick(View v) {
-        float extraSize = 100 * getResources().getDisplayMetrics().density + 0.5f;
+        float extraSize = 150 * getResources().getDisplayMetrics().density + 0.5f;
         if (mPopupWindow == null) {
             TrackOptionsView trackOptionsView = new TrackOptionsView(getActivity());
             trackOptionsView.getGainView().setOnClickListener(this);

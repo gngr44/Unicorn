@@ -4,14 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.audio.unicorn.R;
 
 public class TrackOptionsView extends FrameLayout {
 
-    private ImageView mGainView;
-    private ImageView mSampleRateView;
+    private TextView mGainView;
+    private TextView mSampleRateView;
 
     public TrackOptionsView(Context context) {
         this(context, null);
@@ -22,17 +22,17 @@ public class TrackOptionsView extends FrameLayout {
         init(context);
     }
 
-    public ImageView getGainView() {
+    public TextView getGainView() {
         return mGainView;
     }
 
-    public ImageView getSampleRateView() {
+    public TextView getSampleRateView() {
         return mSampleRateView;
     }
 
     private void init(Context context) {
         View.inflate(context, R.layout.track_options_view, this);
-        mGainView = (ImageView) findViewById(R.id.GainOption);
-        mSampleRateView = (ImageView) findViewById(R.id.SampleRateOption);
+        mGainView = (TextView) findViewById(R.id.GainOption);
+        mSampleRateView = (TextView) findViewById(R.id.SampleRateOption);
     }
 }

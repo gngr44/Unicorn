@@ -3,18 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
+    <TextView
         android:id="@+id/GainOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/track_option_width_height"
+        android:layout_height="@dimen/track_option_width_height"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:background="@drawable/track_gain_option_background"
+        android:gravity="center"
+        android:text="GAIN"
+        android:textSize="12sp" />
 
-    <ImageView
+    <TextView
         android:id="@+id/SampleRateOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/track_option_width_height"
+        android:layout_height="@dimen/track_option_width_height"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher" />
+        android:background="@drawable/track_sample_rate_option_background"
+        android:gravity="center"
+        android:text="SAMPLE RATE"
+        android:textSize="12sp" />
 
 </RelativeLayout>
