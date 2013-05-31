@@ -5,10 +5,10 @@
     android:clipChildren="false"
     android:orientation="vertical" >
 
-    <com.audio.unicorn.view.SquareImageView
+    <ImageView
         android:id="@+id/TrackSlotView"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/track_slot" />
 
