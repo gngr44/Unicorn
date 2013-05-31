@@ -18,3 +18,27 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+unicorn/.idea/.name
+
+unicorn/.idea/copyright/profiles_settings.xml
+
+unicorn/.idea/compiler.xml
+
+unicorn/.idea/encodings.xml
+
+unicorn/.idea/libraries/android_support_v4.xml
+
+unicorn/.idea/modules.xml
+
+unicorn/.idea/misc.xml
+
+unicorn/.idea/scopes/scope_settings.xml
+
+unicorn/.idea/vcs.xml
+
+unicorn/.idea/workspace.xml
+
+unicorn/unicorn.iml
+
+unicorn/src/com/audio/.DS_Store
