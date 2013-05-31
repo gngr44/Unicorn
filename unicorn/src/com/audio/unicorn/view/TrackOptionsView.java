@@ -22,11 +22,11 @@ public class TrackOptionsView extends FrameLayout {
         init(context);
     }
 
-    public TextView getGainView() {
+    public View getGainView() {
         return mGainView;
     }
 
-    public TextView getSampleRateView() {
+    public View getSampleRateView() {
         return mSampleRateView;
     }
 
