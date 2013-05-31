@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.audio.unicorn.R;
 import com.audio.unicorn.engine.UnicornAudioEngine;
@@ -91,11 +92,28 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     public void onDrop(TrackControlView view, Track track) {
         Log.d("TEST", "drop: " + track.getTrackId() + " albumId: " + track.getAlbumId() + " title: " + track.getTitle());
         new ImageLoadThread(getActivity(), mControlView.getTrackSlotView(), track.getAlbumId()).start();
-        String filePath = track.getFilePath();
-        if (mAudioEngine != null) {
-            mAudioEngine.destroy();
-        }
+
+        destroyEngine();
+
+        final String filePath = track.getFilePath();
         mAudioEngine = new UnicornAudioEngine(filePath);
+        setGain(mGainValue);
+        setSamplingRate(mSamplingRateValue);
+        stopSlotAnimation();
+    }
+
+    private void destroyEngine() {
+        if (mAudioEngine != null) {
+            mAudioEngine.stop();
+            mAudioEngine.destroy();
+            mGainProcessor = null;
+        }
+    }
+
+    private void stopSlotAnimation() {
+        if (mSlotAnimation != null) {
+            mSlotAnimation.cancel();
+        }
     }
 
     private void startEngine() {
@@ -107,10 +125,18 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
                 mSlotAnimation.setInterpolator(new LinearInterpolator());
                 mSlotAnimation.setRepeatCount(ObjectAnimator.INFINITE);
             }
-            mSlotAnimation.start();
+            startSlotAnimation();
         } catch (InvalidMediaTypeException e) {
             Log.e("TEST", "", e);
+            Toast.makeText(getActivity(), "Unable to play this file.  Please try again", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void startSlotAnimation() {
+        float rotation = mControlView.getTrackSlotView().getRotation();
+        long playTime = (long) ((rotation / 360) * mSlotAnimation.getDuration());
+        mSlotAnimation.start();
+        mSlotAnimation.setCurrentPlayTime(playTime);
     }
 
     @Override
@@ -134,7 +160,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
     private void stopEngine() {
         mAudioEngine.stop();
-        mSlotAnimation.cancel();
+        stopSlotAnimation();
     }
 
     private class ImageLoadThread extends Thread {
@@ -172,9 +198,6 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
     @Override
     public void onProgressChanged(VerticalSeekBar seekBar, int progress) {
-        if (mAudioEngine == null) {
-            return;
-        }
         float percentage = (float) progress / seekBar.getMax();
         if (mMode == MODE_GAIN) {
             setGain(percentage);
@@ -184,21 +207,38 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     }
 
     private void setGain(float percentage) {
-        if (mGainProcessor == null) {
-            mGainProcessor = new GainProcessor();
-            mAudioEngine.addProcessor(mGainProcessor);
-        }
         mGainValue = percentage;
-        mGainProcessor.setGain(mGainValue);
+
+        if (mAudioEngine != null) {
+            if (mGainProcessor == null) {
+                mGainProcessor = new GainProcessor();
+                mAudioEngine.addProcessor(mGainProcessor);
+            }
+            mGainProcessor.setGain(mGainValue);
+        }
     }
 
     private void setSamplingRate(float percentage) {
         mSamplingRateValue = percentage;
-        mAudioEngine.setSamplingRate(mSamplingRateValue);
-        if (mSlotAnimation != null) {
-            long duration = getRotationDuration(percentage);
-            mSlotAnimation.setDuration(duration);
+
+        if (mAudioEngine != null) {
+            mAudioEngine.setSamplingRate(mSamplingRateValue);
+            if (mSlotAnimation != null) {
+                updateSlotAnimationSpeed(percentage);
+            }
         }
+    }
+
+    private void updateSlotAnimationSpeed(float percentage) {
+        // Adjust the duration and current play time of the rotation animation so that it's sped up or slowed
+        // down based on the sampling rate.
+        long duration = getRotationDuration(percentage);
+        long currentPlayTime = mSlotAnimation.getCurrentPlayTime();
+        long currentDuration = mSlotAnimation.getDuration();
+        float currentPercentage = (float) currentPlayTime / currentDuration;
+        long playTime = (long) (currentPercentage * duration);
+        mSlotAnimation.setDuration(duration);
+        mSlotAnimation.setCurrentPlayTime(playTime);
     }
 
     private static long getRotationDuration(float percentage) {
