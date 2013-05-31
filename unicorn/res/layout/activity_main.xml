@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,9 +14,11 @@
         android:layout_width="fill_parent"
         android:layout_height="100dp" />
 
-    <com.audio.unicorn.view.MainView
+    <FrameLayout
+        android:id="@+id/MainContainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/TrackGalleryContainer" />
+        android:layout_below="@id/TrackGalleryContainer"
+        android:clipChildren="false" />
 
 </RelativeLayout>

@@ -53,7 +53,7 @@ public class UnicornAudioEngine {
         mAudioProcessors.add(processor);
     }
     
-    private synchronized boolean isPlaying() {
+    public synchronized boolean isPlaying() {
         return mIsPlaying;
     }
 

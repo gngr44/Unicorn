@@ -2,21 +2,26 @@ package com.audio.unicorn.view.gallery;
 
 import java.util.List;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.audio.unicorn.R;
+import com.audio.unicorn.dragdrop.DragDropUtil;
 import com.audio.unicorn.media.Track;
 
-public class TrackGalleryView extends ViewPager {
+public class TrackGalleryView extends ViewPager implements OnLongClickListener {
 
     public interface OnViewInstantiatedListener {
         void onViewInstantiated(ImageView view, long albumId);
@@ -65,6 +70,8 @@ public class TrackGalleryView extends ViewPager {
             if (mListener != null) {
                 mListener.onViewInstantiated(imageView, mTracks.get(position).getAlbumId());
             }
+            view.setTag(mTracks.get(position));
+            view.setOnLongClickListener(TrackGalleryView.this);
             return view;
         }
 
@@ -88,5 +95,21 @@ public class TrackGalleryView extends ViewPager {
             return view == object;
         }
 
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        Log.d("TEST", "start drag");
+        Intent intent = new Intent();
+        Track track = (Track) v.getTag();
+        intent.putExtra(DragDropUtil.EXTRA_ALBUM_ID, track.getAlbumId());
+        intent.putExtra(DragDropUtil.EXTRA_TRACK_ID, track.getTrackId());
+        intent.putExtra(DragDropUtil.EXTRA_TITLE, track.getTitle());
+        intent.putExtra(DragDropUtil.EXTRA_FILE_PATH, track.getFilePath());
+        ClipData.Item item = new ClipData.Item(intent);
+        ClipData data = new ClipData("TEST", new String[] { ClipDescription.MIMETYPE_TEXT_INTENT }, item);
+        View.DragShadowBuilder shadow = new DragShadowBuilder(v);
+        v.startDrag(data, shadow, null, 0);
+        return false;
     }
 }
