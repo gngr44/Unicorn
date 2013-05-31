@@ -11,10 +11,15 @@ import android.view.View;
 
 public class VerticalSeekBar extends View {
 
+    public interface SeekBarListener {
+        public void onProgressChanged(VerticalSeekBar seekBar, int progress);
+    }
+
     private int mProgress;
     private int mMax = 100;
     private Rect mRect = new Rect();
     private Paint mPaint = new Paint();
+    private SeekBarListener mListener;
 
     public VerticalSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,6 +28,10 @@ public class VerticalSeekBar extends View {
 
     public void setColor(int color) {
         mPaint.setColor(color);
+    }
+
+    public void setListener(SeekBarListener listener) {
+        mListener = listener;
     }
 
     public void setProgress(int progress) {
@@ -54,7 +63,7 @@ public class VerticalSeekBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        final int top = (int) (((float) mProgress / mMax) * getHeight());
+        final int top = (int) (((float) (mMax - mProgress) / mMax) * getHeight());
         mRect.top = top;
         canvas.drawRect(mRect, mPaint);
     }
@@ -65,8 +74,14 @@ public class VerticalSeekBar extends View {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 final float y = event.getY();
-                final int progress = (int) ((y / getHeight()) * mMax);
+                final int top = (int) ((y / getHeight()) * mMax);
+                int progress = mMax - top;
+                progress = Math.max(0, progress);
+                progress = Math.min(mMax, progress);
                 setProgress(progress);
+                if (mListener != null) {
+                    mListener.onProgressChanged(this, progress);
+                }
                 break;
         }
         return true;

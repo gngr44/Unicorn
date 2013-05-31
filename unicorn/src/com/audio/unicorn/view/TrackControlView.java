@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.View.OnDragListener;
@@ -25,6 +24,11 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
 
     private ImageView mTrackSlotView;
     private OnDropListener mListener;
+    private VerticalSeekBar mSeekBar;
+
+    public TrackControlView(Context context) {
+        this(context, null);
+    }
 
     public TrackControlView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -33,8 +37,9 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
 
     private void init(Context context) {
         View.inflate(context, R.layout.track_control_view, this);
-        setClipChildren(false);
         mTrackSlotView = (ImageView) findViewById(R.id.TrackSlotView);
+        mSeekBar = (VerticalSeekBar) findViewById(R.id.SeekBar);
+
         mTrackSlotView.setOnDragListener(this);
     }
 
@@ -81,6 +86,10 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
 
     private void resetAnimation() {
         mTrackSlotView.animate().translationY(0).scaleX(1.0f).scaleY(1.0f);
+    }
+
+    public VerticalSeekBar getSeekBar() {
+        return mSeekBar;
     }
 
 }
