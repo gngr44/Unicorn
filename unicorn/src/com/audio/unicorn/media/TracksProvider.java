@@ -10,7 +10,8 @@ import android.provider.MediaStore.Audio.Media;
 public class TracksProvider {
     public List<Track> queryTracks(Context context) {
         final String[] projection = { Media._ID, Media.ALBUM_ID, Media.TITLE, Media.DATA };
-        final Cursor c = context.getContentResolver().query(Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        String selection = Media.IS_MUSIC + "=1";
+        final Cursor c = context.getContentResolver().query(Media.EXTERNAL_CONTENT_URI, projection, selection, null, null);
         final List<Track> tracks = new ArrayList<Track>(c.getCount());
         final int dataIndex = c.getColumnIndex(Media.DATA);
         final int trackIndex = c.getColumnIndex(Media._ID);
