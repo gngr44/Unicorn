@@ -22,11 +22,11 @@ public class GainProcessor implements UnicornAudioProcessor {
     }
 
     @Override
-    public boolean processAudio(byte[] buffer) {
+    public byte[] processAudio(byte[] buffer) {
         for (int i=0; i<buffer.length; i++) {
             buffer[i] = (byte) (buffer[i] * mGain);
         }
 
-        return true;
+        return buffer;
     }
 }

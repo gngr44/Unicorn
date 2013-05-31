@@ -36,6 +36,8 @@ public class UnicornAudioEngine {
 
     private Thread mAudioProcessorThread;
 
+    private int mSamplingRate;
+
     public UnicornAudioEngine(String filename) {
         if (filename == null) throw new IllegalArgumentException("Filename cannot be null. Must be a valid file " +
                 "using an absolute path");
@@ -85,6 +87,12 @@ public class UnicornAudioEngine {
         mAudioProcessors = null;
     }
 
+    public void setSamplingRate(float samplingRateScale) {
+        if (mTrack != null && mTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
+            mTrack.setPlaybackRate((int) ((samplingRateScale + 0.5f) * mTrack.getSampleRate()));
+        }
+    }
+
     private void initDecoder() throws InvalidMediaTypeException {
         mMediaExtractor = new MediaExtractor();
         mMediaExtractor.setDataSource(mFile.getPath());
@@ -101,7 +109,7 @@ public class UnicornAudioEngine {
                 audioFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE),
                 AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                1024,
+                2*1024,
                 AudioTrack.MODE_STREAM);
 
         mMediaCodec = MediaCodec.createDecoderByType(mime);
@@ -155,7 +163,7 @@ public class UnicornAudioEngine {
         byte[] result = chunk;
 
         while (iterator.hasNext()) {
-            iterator.next().processAudio(result);
+            result = iterator.next().processAudio(result);
         }
 
         return result;
