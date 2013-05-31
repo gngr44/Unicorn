@@ -154,10 +154,10 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
             }
         } else if (v.getId() == R.id.GainOption) {
             setMode(MODE_GAIN);
-            dismissPopup(mPopupWindow);
+            mPopupWindow.dismissPopup();
         } else if (v.getId() == R.id.SampleRateOption) {
             setMode(MODE_SAMPLE_RATE);
-            dismissPopup(mPopupWindow);
+            mPopupWindow.dismissPopup();
         }
     }
 
@@ -281,30 +281,6 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         return true;
     }
 
-    private static void dismissPopup(final CustomPopupWindow popupWindow) {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(popupWindow.getContentView(), "alpha", 1.0f, 0.0f);
-        alpha.addListener(new AnimatorListener() {
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                popupWindow.realDismiss();
-            };
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-        });
-        alpha.start();
-    }
-
     /**
      * A lame way of doing some animation before actually dismissing the PopupWindow.
      * 
@@ -319,11 +295,35 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
         @Override
         public void dismiss() {
-            dismissPopup(this);
+            dismissPopup();
         }
 
         public void realDismiss() {
             super.dismiss();
+        }
+
+        private void dismissPopup() {
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(getContentView(), "alpha", 1.0f, 0.0f);
+            alpha.addListener(new AnimatorListener() {
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    realDismiss();
+                };
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+            });
+            alpha.start();
         }
     }
 }
