@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.audio.unicorn.view.MainView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.audio.unicorn.view.TrackOptionsView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

@@ -2,19 +2,22 @@ package com.audio.unicorn.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 
 import com.audio.unicorn.R;
 
-public class MainView extends FrameLayout {
+public class MainView extends FrameLayout implements OnTouchListener {
 
     private CenterPlayingView mCenterView;
     private TrackView mTrackView1;
     private TrackView mTrackView2;
     private TrackView mTrackView3;
     private TrackView mTrackView4;
-    private TrackView mTrackView5;
+
+    private TrackOptionsView mTrackOptionsView;
 
     public MainView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,7 +31,12 @@ public class MainView extends FrameLayout {
         mTrackView2 = (TrackView) findViewById(R.id.TrackView2);
         mTrackView3 = (TrackView) findViewById(R.id.TrackView3);
         mTrackView4 = (TrackView) findViewById(R.id.TrackView4);
-        mTrackView5 = (TrackView) findViewById(R.id.TrackView5);
+        mTrackOptionsView = (TrackOptionsView) findViewById(R.id.TrackOptionsView);
+
+        mTrackView1.setOnTouchListener(this);
+        mTrackView2.setOnTouchListener(this);
+        mTrackView3.setOnTouchListener(this);
+        mTrackView4.setOnTouchListener(this);
     }
 
     @Override
@@ -52,4 +60,17 @@ public class MainView extends FrameLayout {
                 + mTrackView1.getMeasuredWidth(), centerViewBottom);
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mTrackOptionsView.setAnchorView(v);
+                mTrackOptionsView.setVisibility(View.VISIBLE);
+                break;
+            case MotionEvent.ACTION_UP:
+                mTrackOptionsView.setVisibility(View.GONE);
+                break;
+        }
+        return true;
+    }
 }
