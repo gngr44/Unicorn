@@ -92,7 +92,6 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
             mAudioEngine.destroy();
         }
         mAudioEngine = new UnicornAudioEngine(filePath);
-        startEngine();
     }
 
     private void startEngine() {
