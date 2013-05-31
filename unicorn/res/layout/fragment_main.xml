@@ -1,43 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:clipChildren="false" >
+    android:clipChildren="false"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/WaveFormContainer"
+        android:baselineAligned="false"
+        android:clipChildren="false"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <FrameLayout
+            android:id="@+id/TrackControl1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <FrameLayout
+            android:id="@+id/TrackControl2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <FrameLayout
+            android:id="@+id/TrackControl3"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <FrameLayout
+            android:id="@+id/TrackControl4"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <FrameLayout
+            android:id="@+id/TrackControl5"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="8dp" />
+    </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/TrackControl1"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:padding="8dp" />
+        android:id="@+id/WaveFormContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true" />
 
-    <FrameLayout
-        android:id="@+id/TrackControl2"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:padding="8dp" />
-
-    <FrameLayout
-        android:id="@+id/TrackControl3"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:padding="8dp" />
-
-    <FrameLayout
-        android:id="@+id/TrackControl4"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:padding="8dp" />
-
-    <FrameLayout
-        android:id="@+id/TrackControl5"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:padding="8dp" />
-
-</LinearLayout>
+</RelativeLayout>

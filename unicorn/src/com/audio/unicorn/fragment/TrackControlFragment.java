@@ -40,6 +40,10 @@ import com.audio.unicorn.view.VerticalSeekBar.SeekBarListener;
 public class TrackControlFragment extends Fragment implements OnDropListener, OnClickListener, SeekBarListener,
         OnLongClickListener {
 
+    public interface OnTrackSetListener {
+        void onTrackSet(TrackControlFragment fragment, Track track);
+    }
+
     private static final int ROTATION_DURATION = 4000;
     private static final int MAX_ROTATION_DURATION = 5000;
     private static final int MODE_GAIN = 0;
@@ -56,9 +60,14 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     private int mMode = MODE_GAIN;
     private float mGainValue = 1.0f;
     private float mSamplingRateValue = 0.5f;
+    private OnTrackSetListener mListener;
 
     public static TrackControlFragment newInstance() {
         return new TrackControlFragment();
+    }
+
+    public void setListener(OnTrackSetListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -103,6 +112,10 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         setGain(mGainValue);
         setSamplingRate(mSamplingRateValue);
         stopSlotAnimation();
+
+        if (mListener != null) {
+            mListener.onTrackSet(this, track);
+        }
     }
 
     private void destroyEngine() {
