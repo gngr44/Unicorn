@@ -5,6 +5,11 @@ package com.audio.unicorn.engine.exception;
  */
 public class InvalidMediaTypeException extends Exception {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3229396021398026532L;
+
     public InvalidMediaTypeException() {
         super();
     }

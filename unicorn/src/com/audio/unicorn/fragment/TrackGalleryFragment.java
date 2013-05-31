@@ -67,7 +67,6 @@ public class TrackGalleryFragment extends Fragment implements LoaderCallbacks<Li
     private class ImageLoadThread extends Thread {
 
         private long mAlbumId;
-        private FileNotFoundException mException;
         private Context mContext;
         private Handler mHandler;
         private ImageView mImageView;
@@ -91,7 +90,7 @@ public class TrackGalleryFragment extends Fragment implements LoaderCallbacks<Li
                     }
                 });
             } catch (FileNotFoundException e) {
-                mException = e;
+                // Ignore image load fails.
             }
         }
 

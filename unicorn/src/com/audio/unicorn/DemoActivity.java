@@ -1,8 +1,7 @@
 package com.audio.unicorn;
 
-import android.media.AudioTrack;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -77,7 +76,8 @@ public class DemoActivity extends Activity implements View.OnClickListener, Seek
         mSeekBar3.setOnSeekBarChangeListener(this);
 
         mAudioEngine1 = new UnicornAudioEngine("/sdcard/Music/Fiction [Funkagenda Bootleg Re-Edit].mp3");
-        mAudioEngine2 = new UnicornAudioEngine("/sdcard/Music/Dimitri Vegas & Like Mike - Madness feat. Lil Jon and Coone (Corporate Slackrs Remix).mp3");
+        mAudioEngine2 = new UnicornAudioEngine(
+                "/sdcard/Music/Dimitri Vegas & Like Mike - Madness feat. Lil Jon and Coone (Corporate Slackrs Remix).mp3");
         mAudioEngine3 = new UnicornAudioEngine("/sdcard/Music/Drake - 5AM In Toronto.mp3");
 
         mGainProcessor1 = new GainProcessor();
@@ -136,14 +136,14 @@ public class DemoActivity extends Activity implements View.OnClickListener, Seek
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         if (seekBar == mSeekBar1) {
-//            mGainProcessor1.setGain((float) (i / (float) seekBar.getMax()));
+            // mGainProcessor1.setGain((float) (i / (float) seekBar.getMax()));
             mAudioEngine1.setSamplingRate((float) (i / (float) seekBar.getMax()));
         } else if (seekBar == mSeekBar2) {
             mAudioEngine2.setSamplingRate((float) (i / (float) seekBar.getMax()));
-//            mGainProcessor2.setGain((float) (i / (float) seekBar.getMax()));
+            // mGainProcessor2.setGain((float) (i / (float) seekBar.getMax()));
         } else if (seekBar == mSeekBar3) {
             mAudioEngine3.setSamplingRate((float) (i / (float) seekBar.getMax()));
-//            mGainProcessor3.setGain((float) (i / (float) seekBar.getMax()));
+            // mGainProcessor3.setGain((float) (i / (float) seekBar.getMax()));
         }
     }
 

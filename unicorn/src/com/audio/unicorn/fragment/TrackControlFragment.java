@@ -167,7 +167,6 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     private class ImageLoadThread extends Thread {
 
         private long mAlbumId;
-        private FileNotFoundException mException;
         private Context mContext;
         private Handler mHandler;
         private ImageView mImageView;
@@ -191,7 +190,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
                     }
                 });
             } catch (FileNotFoundException e) {
-                mException = e;
+                // Ignore image load fails
             }
         }
 
