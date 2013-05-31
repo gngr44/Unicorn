@@ -69,6 +69,8 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         mControlView.getTrackSlotView().setOnClickListener(this);
         mControlView.getTrackSlotView().setOnLongClickListener(this);
         mSeekBar.setListener(this);
+
+        setMode(MODE_GAIN);
         return view;
     }
 
@@ -77,9 +79,11 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         if (mode == MODE_GAIN) {
             mSeekBar.setProgress((int) (mGainValue * mSeekBar.getMax()));
             mSeekBar.setColor(Color.CYAN);
+            mControlView.getModeTextView().setText("Gain");
         } else if (mode == MODE_SAMPLE_RATE) {
             mSeekBar.setProgress((int) (mSamplingRateValue * mSeekBar.getMax()));
             mSeekBar.setColor(Color.RED);
+            mControlView.getModeTextView().setText("Sample Rate");
         }
     }
 

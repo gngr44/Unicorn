@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnDragListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.audio.unicorn.R;
 import com.audio.unicorn.dragdrop.DragDropUtil;
@@ -25,6 +26,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
     private ImageView mTrackSlotView;
     private OnDropListener mListener;
     private VerticalSeekBar mSeekBar;
+    private TextView mModeText;
 
     public TrackControlView(Context context) {
         this(context, null);
@@ -38,6 +40,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
     private void init(Context context) {
         View.inflate(context, R.layout.track_control_view, this);
         mTrackSlotView = (ImageView) findViewById(R.id.TrackSlotView);
+        mModeText = (TextView) findViewById(R.id.ControlText);
         mSeekBar = (VerticalSeekBar) findViewById(R.id.SeekBar);
 
         mTrackSlotView.setOnDragListener(this);
@@ -53,6 +56,10 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
 
     public ImageView getTrackSlotView() {
         return mTrackSlotView;
+    }
+
+    public TextView getModeTextView() {
+        return mModeText;
     }
 
     @Override
