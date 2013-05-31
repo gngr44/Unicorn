@@ -32,11 +32,9 @@ public class UnicornAudioEngine {
     private MediaExtractor mMediaExtractor;
     private MediaCodec mMediaCodec;
 
-    private boolean mIsProcessing = false;
+    private boolean mIsPlaying = false;
 
     private Thread mAudioProcessorThread;
-
-    private int mSamplingRate;
 
     public UnicornAudioEngine(String filename) {
         if (filename == null) throw new IllegalArgumentException("Filename cannot be null. Must be a valid file " +
@@ -54,13 +52,21 @@ public class UnicornAudioEngine {
     public void addProcessor(UnicornAudioProcessor processor) {
         mAudioProcessors.add(processor);
     }
+    
+    private synchronized boolean isPlaying() {
+        return mIsPlaying;
+    }
+
+    private synchronized void setPlaying(boolean playing) {
+        mIsPlaying = playing;
+    }
 
     public byte[] start() throws InvalidMediaTypeException {
-        if (isProcessing()) {
+        if (isPlaying()) {
             stop();
         }
 
-        setProcessing(true);
+        setPlaying(true);
 
         initDecoder();
 
@@ -71,7 +77,7 @@ public class UnicornAudioEngine {
     }
 
     public void stop() {
-        if (isProcessing()) {
+        if (isPlaying()) {
             mAudioProcessorThread.interrupt();
 
             try {
@@ -109,7 +115,7 @@ public class UnicornAudioEngine {
                 audioFormat.getInteger(MediaFormat.KEY_SAMPLE_RATE),
                 AudioFormat.CHANNEL_OUT_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT,
-                2*1024,
+                1024,
                 AudioTrack.MODE_STREAM);
 
         mMediaCodec = MediaCodec.createDecoderByType(mime);
@@ -169,14 +175,6 @@ public class UnicornAudioEngine {
         return result;
     }
 
-    private synchronized boolean isProcessing() {
-        return mIsProcessing;
-    }
-
-    private synchronized void setProcessing(boolean processing) {
-        mIsProcessing = processing;
-    }
-
     private class AudioDecoder implements Runnable {
         @Override
         public void run() {
@@ -214,7 +212,7 @@ public class UnicornAudioEngine {
                 mMediaCodec = null;
                 mMediaExtractor = null;
 
-                setProcessing(false);
+                setPlaying(false);
             }
         }
     }
