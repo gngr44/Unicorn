@@ -12,6 +12,8 @@ import android.view.View;
 
 public class VerticalSeekBar extends View {
 
+    private static final int MIN_ALPHA = 100;
+
     public interface SeekBarListener {
         public void onProgressChanged(VerticalSeekBar seekBar, int progress);
     }
@@ -74,6 +76,7 @@ public class VerticalSeekBar extends View {
         super.onDraw(canvas);
         final int top = (int) (((float) (mMax - mProgress) / mMax) * getHeight());
         mRect.top = top;
+        mPaint.setAlpha((int) (MIN_ALPHA + ((255 - MIN_ALPHA) * ((float) mProgress / mMax))));
         canvas.drawRect(mRect, mPaint);
     }
 
