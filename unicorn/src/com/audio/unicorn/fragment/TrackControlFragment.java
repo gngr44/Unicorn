@@ -140,6 +140,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
         long playTime = (long) ((rotation / 360) * mSlotAnimation.getDuration());
         mSlotAnimation.start();
         mSlotAnimation.setCurrentPlayTime(playTime);
+        updateSlotAnimationSpeed(mSamplingRateValue);
     }
 
     @Override
@@ -225,7 +226,7 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
 
         if (mAudioEngine != null) {
             mAudioEngine.setSamplingRate(mSamplingRateValue);
-            if (mSlotAnimation != null) {
+            if (mSlotAnimation != null && mSlotAnimation.isRunning()) {
                 updateSlotAnimationSpeed(percentage);
             }
         }
