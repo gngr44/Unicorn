@@ -11,8 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
+import android.view.ViewConfiguration;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,13 +23,19 @@ import com.audio.unicorn.R;
 import com.audio.unicorn.dragdrop.DragDropUtil;
 import com.audio.unicorn.media.Track;
 
-public class TrackGalleryView extends ViewPager implements OnLongClickListener {
+public class TrackGalleryView extends ViewPager implements OnTouchListener {
+
+    private static final long LONG_PRESS_TIME_OUT = 200;
 
     public interface OnViewInstantiatedListener {
         void onViewInstantiated(ImageView view, long albumId);
     }
 
     private OnViewInstantiatedListener mListener;
+    private Runnable mLongPressRunnable;
+    private float mOriginX;
+    private float mOriginY;
+    private int mTouchSlopSquare;
 
     public TrackGalleryView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,6 +44,8 @@ public class TrackGalleryView extends ViewPager implements OnLongClickListener {
 
     private void init(Context context) {
         setPageMargin((int) (5 * getResources().getDisplayMetrics().density + 0.5f));
+        int scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        mTouchSlopSquare = scaledTouchSlop * scaledTouchSlop;
     }
 
     public void setListener(OnViewInstantiatedListener listener) {
@@ -71,7 +81,7 @@ public class TrackGalleryView extends ViewPager implements OnLongClickListener {
                 mListener.onViewInstantiated(imageView, mTracks.get(position).getAlbumId());
             }
             view.setTag(mTracks.get(position));
-            view.setOnLongClickListener(TrackGalleryView.this);
+            view.setOnTouchListener(TrackGalleryView.this);
             return view;
         }
 
@@ -98,7 +108,41 @@ public class TrackGalleryView extends ViewPager implements OnLongClickListener {
     }
 
     @Override
-    public boolean onLongClick(View v) {
+    public boolean onTouch(final View v, MotionEvent event) {
+        // Need to override onTouch to customize the long press delay.
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            mOriginX = event.getX();
+            mOriginY = event.getY();
+            if (mLongPressRunnable != null) {
+                getHandler().removeCallbacks(mLongPressRunnable);
+            }
+            mLongPressRunnable = new Runnable() {
+
+                @Override
+                public void run() {
+                    startDrag(v);
+                }
+
+            };
+            getHandler().postDelayed(mLongPressRunnable, LONG_PRESS_TIME_OUT);
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            final int deltaX = (int) (event.getX() - mOriginX);
+            final int deltaY = (int) (event.getY() - mOriginY);
+            int distance = (deltaX * deltaX) + (deltaY * deltaY);
+            if (distance > mTouchSlopSquare) {
+                getHandler().removeCallbacks(mLongPressRunnable);
+            }
+
+        } else {
+            if (mLongPressRunnable != null) {
+                getHandler().removeCallbacks(mLongPressRunnable);
+            }
+        }
+        return false;
+    }
+
+    private void startDrag(View v) {
         Log.d("TEST", "start drag");
         Intent intent = new Intent();
         Track track = (Track) v.getTag();
@@ -110,6 +154,5 @@ public class TrackGalleryView extends ViewPager implements OnLongClickListener {
         ClipData data = new ClipData("TEST", new String[] { ClipDescription.MIMETYPE_TEXT_INTENT }, item);
         View.DragShadowBuilder shadow = new DragShadowBuilder(v);
         v.startDrag(data, shadow, null, 0);
-        return false;
     }
 }
