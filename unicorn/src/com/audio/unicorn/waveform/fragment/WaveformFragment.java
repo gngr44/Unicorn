@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -28,6 +29,7 @@ public class WaveformFragment extends Fragment implements LoaderCallbacks<CheapS
     }
 
     private WaveformView mWaveformView;
+    private boolean mFirstWaveform;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class WaveformFragment extends Fragment implements LoaderCallbacks<CheapS
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_waveform, container, false);
         mWaveformView = (WaveformView) view;
-
+        mFirstWaveform = true;
         return view;
     }
 
@@ -60,6 +62,11 @@ public class WaveformFragment extends Fragment implements LoaderCallbacks<CheapS
             mWaveformView.setListener(this);
             mWaveformView.setSoundFile(data);
             mWaveformView.recomputeHeights(getResources().getDisplayMetrics().density);
+
+            if (mFirstWaveform) {
+                mFirstWaveform = false;
+                ObjectAnimator.ofFloat(mWaveformView, "translationY", mWaveformView.getHeight(), 0.0f).start();
+            }
         }
     }
 
