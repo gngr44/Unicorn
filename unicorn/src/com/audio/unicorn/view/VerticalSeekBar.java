@@ -1,5 +1,6 @@
 package com.audio.unicorn.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -39,6 +40,14 @@ public class VerticalSeekBar extends View {
         invalidate();
     }
 
+    public void setProgress(int progress, boolean animate) {
+        if (animate) {
+            ObjectAnimator.ofInt(this, "progress", progress).start();
+        } else {
+            setProgress(progress);
+        }
+    }
+
     public int getProgress() {
         return mProgress;
     }
@@ -55,8 +64,8 @@ public class VerticalSeekBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mRect.left = 0;
-        mRect.right = w;
+        mRect.left = getPaddingLeft();
+        mRect.right = w - getPaddingRight();
         mRect.bottom = h;
     }
 

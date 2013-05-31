@@ -4,23 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <com.audio.unicorn.view.TrackView
         android:id="@+id/TrackSlotView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:background="@drawable/track_slot" />
 
     <TextView
         android:id="@+id/ControlText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="Control Name" />
+        android:text="Control Name"
+        android:textSize="16sp" />
 
     <com.audio.unicorn.view.VerticalSeekBar
         android:id="@+id/SeekBar"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
 
 </LinearLayout>

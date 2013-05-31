@@ -23,7 +23,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
         public void onDrop(TrackControlView view, Track track);
     }
 
-    private ImageView mTrackSlotView;
+    private TrackView mTrackSlotView;
     private OnDropListener mListener;
     private VerticalSeekBar mSeekBar;
     private TextView mModeText;
@@ -39,7 +39,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
 
     private void init(Context context) {
         View.inflate(context, R.layout.track_control_view, this);
-        mTrackSlotView = (ImageView) findViewById(R.id.TrackSlotView);
+        mTrackSlotView = (TrackView) findViewById(R.id.TrackSlotView);
         mModeText = (TextView) findViewById(R.id.ControlText);
         mSeekBar = (VerticalSeekBar) findViewById(R.id.SeekBar);
 
@@ -50,11 +50,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
         mListener = listener;
     }
 
-    public void setTrackSlotImage(Bitmap bitmap) {
-        mTrackSlotView.setImageBitmap(bitmap);
-    }
-
-    public ImageView getTrackSlotView() {
+    public TrackView getTrackSlotView() {
         return mTrackSlotView;
     }
 
@@ -66,7 +62,7 @@ public class TrackControlView extends LinearLayout implements OnDragListener {
     public boolean onDrag(View v, DragEvent event) {
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_ENTERED:
-                mTrackSlotView.animate().translationY(-20).scaleX(2.0f).scaleY(2.0f);
+                mTrackSlotView.animate().scaleX(1.3f).scaleY(1.3f);
                 invalidate();
                 break;
             case DragEvent.ACTION_DRAG_EXITED:

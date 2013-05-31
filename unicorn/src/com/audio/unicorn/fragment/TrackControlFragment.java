@@ -78,11 +78,11 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     public void setMode(int mode) {
         mMode = mode;
         if (mode == MODE_GAIN) {
-            mSeekBar.setProgress((int) (mGainValue * mSeekBar.getMax()));
+            mSeekBar.setProgress((int) (mGainValue * mSeekBar.getMax()), true);
             mSeekBar.setColor(Color.CYAN);
             mControlView.getModeTextView().setText("Gain");
         } else if (mode == MODE_SAMPLE_RATE) {
-            mSeekBar.setProgress((int) (mSamplingRateValue * mSeekBar.getMax()));
+            mSeekBar.setProgress((int) (mSamplingRateValue * mSeekBar.getMax()), true);
             mSeekBar.setColor(Color.RED);
             mControlView.getModeTextView().setText("Sample Rate");
         }
@@ -91,7 +91,8 @@ public class TrackControlFragment extends Fragment implements OnDropListener, On
     @Override
     public void onDrop(TrackControlView view, Track track) {
         Log.d("TEST", "drop: " + track.getTrackId() + " albumId: " + track.getAlbumId() + " title: " + track.getTitle());
-        new ImageLoadThread(getActivity(), mControlView.getTrackSlotView(), track.getAlbumId()).start();
+        new ImageLoadThread(getActivity(), mControlView.getTrackSlotView().getImageView(), track.getAlbumId()).start();
+        mControlView.getTrackSlotView().getTitleText().setText(track.getTitle());
 
         destroyEngine();
 
